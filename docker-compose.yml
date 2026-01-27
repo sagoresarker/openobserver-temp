@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  backend:
+    image: public.ecr.aws/zinclabs/openobserve:latest
+    container_name: openobserve-backend
+    ports:
+      - "5080:5080"
+    environment:
+      - ZO_ROOT_USER_EMAIL=root@example.com
+      - ZO_ROOT_USER_PASSWORD=Complexpass#123
+      - ZO_DATA_DIR=/data
+    volumes:
+      - ./data:/data
+
+  frontend:
+    build:
+      context: ./web
+      dockerfile: Dockerfile.dev
+      args:
+        BUILDKIT_INLINE_CACHE: 1
+    container_name: openobserve-frontend
+    ports:
+      - "8081:8081"
+    environment:
+      - VITE_OPENOBSERVE_ENDPOINT=http://localhost:5080/
+    volumes:
+      - ./web:/app
+      - /app/node_modules
+    depends_on:
+      - backend
