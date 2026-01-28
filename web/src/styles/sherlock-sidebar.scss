@@ -1,0 +1,29 @@
+/**
+ * Sherlock pill sidebar – loaded last in main.ts so it overrides Quasar and other styles.
+ * Do not nest under body.platform-ui; these selectors must always win for the pill nav.
+ */
+
+/* Force vertical sidebar layout */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .q-item {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Center label container */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .q-item__label,
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .q-item-label.menu-link-label {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Rotate text vertically – only the label, not the icon */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .sidebar-label {
+  writing-mode: vertical-rl !important;
+  transform: rotate(180deg) !important;
+  white-space: nowrap !important;
+  line-height: 1 !important;
+  text-align: center !important;
+  font-weight: 600 !important;
+}
