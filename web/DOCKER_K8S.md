@@ -2,6 +2,29 @@
 
 Build context: **`./web`** (run from repo root).
 
+## Makefile (build, push, deploy)
+
+Use `Makefile.web` at repo root to build, push, and update **o2-openobserve-router** to use the frontend image:
+
+```bash
+# From repo root
+make -f Makefile.web build          # Build image (linux/amd64)
+make -f Makefile.web push           # Tag and push to Docker Hub
+make -f Makefile.web deploy         # Set o2-openobserve-router image and rollout
+make -f Makefile.web deploy-patch   # One-time: container port 8080, probes use /
+```
+
+Override image/tag/user:
+
+```bash
+make -f Makefile.web build IMAGE_NAME=openobserve-web DOCKER_USER=sagoresarker TAG=v0.0.2
+make -f Makefile.web build VITE_OPENOBSERVE_ENDPOINT=https://api.o2.example.com  # API on different host
+```
+
+After changing the router to the frontend image, run **`deploy-patch`** once so the deployment uses port 8080 and probes `path: /` (the frontend has no `/healthz`).
+
+---
+
 ## Build
 
 ```bash
