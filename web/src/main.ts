@@ -66,13 +66,14 @@ reoInit();
 const getConfig = async () => {
   await configService.get_config().then((res: any) => {
     store.dispatch("setConfig", res.data);
-    config.enableAnalytics = res.data.telemetry_enabled.toString();
+    config.enableAnalytics =
+      res.data?.telemetry_enabled?.toString() ?? "false";
 
     // Store initial commit hash for version checking
-    if (res.data.commit_hash) {
+    if (res.data?.commit_hash) {
       buildVersionChecker.setInitialVersion(res.data.commit_hash);
     }
-    if (res.data.rum.enabled) {
+    if (res.data?.rum?.enabled) {
       const options = {
         clientToken: res.data.rum.client_token,
         applicationId: res.data.rum.application_id,
@@ -117,6 +118,10 @@ const getConfig = async () => {
       // to avoid capturing login page with "Unknown" user
       // Session replay will be started in Login.vue and MainLayout.vue after user is authenticated
     }
+  }).catch((err) => {
+    // Config fetch failed (network error, backend unreachable, or wrong API URL).
+    // App still loads; user may need to set correct API endpoint or start backend.
+    console.warn("Failed to load config:", err?.message ?? err);
   });
 };
 

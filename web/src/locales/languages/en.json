@@ -392,7 +392,7 @@
     "loadingApplicationErrors": "Hold on tight, we're fetching application errors."
   },
   "about": {
-    "name": "Sherlock",
+    "name": "Sherlock V2",
     "introduction": "Logs, metrics, and alerts—investigated.",
     "version": "Version",
     "commitHash": "Commit Hash",

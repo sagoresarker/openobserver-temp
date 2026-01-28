@@ -393,7 +393,7 @@
     "loadingApplicationErrors": "等一下，我们正在提取应用程序错误。"
   },
   "about": {
-    "name": "OpenObserve",
+    "name": "Sherlock V2",
     "introduction": "让应用观测更简单",
     "version": "版本",
     "commitHash": "提交ID",

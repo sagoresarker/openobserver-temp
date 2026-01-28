@@ -58,11 +58,11 @@ export default function (store: any) {
   const router = createRouter(routerMap);
 
   router.beforeEach((to: any, from: any, next: any) => {
-    // Set page title with OpenObserve prefix
+    // Set page title with app name prefix
     if (to.meta && to.meta.title) {
-      document.title = `OpenObserve - ${to.meta.title}`;
+      document.title = `Sherlock V2 - ${to.meta.title}`;
     } else {
-      document.title = 'OpenObserve';
+      document.title = "Sherlock V2";
     }
 
     const isAuthenticated = store.state.loggedIn;
