@@ -1131,9 +1131,20 @@ class="q-pr-sm q-pt-xs" />
         >
           <template #before>
             <div
-              class="col query-editor-wrap tw:border tw:solid tw:border-[var(--o2-border-color)] tw:mb-[0.375rem] tw:rounded-[0.375rem] tw:overflow-hidden tw:h-full"
+              class="col query-editor-wrap tw:border tw:solid tw:border-[var(--o2-border-color)] tw:mb-[0.375rem] tw:rounded-[0.375rem] tw:overflow-hidden tw:h-full tw:relative"
               :class="searchObj.data.transformType && searchObj.meta.showTransformEditor ? 'tw:ml-[0.375rem]' : 'tw:mx-[0.375rem]'"
             >
+              <div
+                v-if="
+                  router.currentRoute.value.name === 'logs' &&
+                  searchObj.data.editorValue === '' &&
+                  searchObj.meta.queryEditorPlaceholderFlag
+                "
+                class="query-editor-placeholder-overlay"
+                data-test="logs-query-editor-placeholder"
+              >
+                {{ t("search.queryEditorPlaceholder") }}
+              </div>
               <code-query-editor
                 v-if="router.currentRoute.value.name === 'logs'"
                 data-test="logs-search-bar-query-editor"

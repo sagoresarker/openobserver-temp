@@ -157,87 +157,6 @@ body.platform-ui {
     }
   }
 
-  // Sherlock vertical pill sidebar with rotated text (4 sections: Logs, Dashboard, Metrics inactive, Alerts)
-  .sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
-    width: 56px !important;
-    min-width: 56px !important;
-    padding: 8px 0;
-
-    .card-container {
-      padding: 0;
-    }
-
-    .leftNavList.sherlock-nav-list {
-      padding: 0 6px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .q-item {
-      width: 100%;
-      min-height: 72px;
-      margin: 0;
-      padding: 8px 0;
-      border-radius: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      flex: 0 0 auto;
-
-      .q-item__section--avatar {
-        flex-direction: column;
-        align-items: center;
-        min-width: auto;
-        margin-right: 0;
-        margin-bottom: 4px;
-      }
-
-      .q-icon {
-        font-size: 20px;
-        flex-shrink: 0;
-      }
-
-      .q-item-label.menu-link-label {
-        display: inline-block;
-        transform: rotate(-90deg);
-        white-space: nowrap;
-        font-size: 11px;
-        font-weight: 500;
-        letter-spacing: 0.03em;
-        margin: 0;
-        min-height: 32px;
-        line-height: 32px;
-      }
-
-      &:hover:not(.q-router-link--active):not(.menu-link-inactive) {
-        background-color: var(--sherlock-nav-hover-bg);
-      }
-
-      &.q-router-link--active {
-        background-color: var(--sherlock-nav-active-bg) !important;
-
-        &::before {
-          left: 0;
-          right: auto;
-          top: 8px;
-          bottom: 8px;
-          width: 3px;
-          height: auto;
-          border-radius: 2px 0 0 2px;
-        }
-      }
-
-      &.menu-link-inactive {
-        opacity: 0.5;
-        cursor: not-allowed;
-        pointer-events: none;
-      }
-    }
-  }
-
   // Fallback for any non-Sherlock drawer (keep original if needed)
   .q-drawer:not(.sherlock-nav-drawer) {
     background-color: var(--platform-menu-bg) !important;
@@ -357,6 +276,162 @@ body.platform-ui {
   --o2-menu-gradient-end: var(--platform-menu-active-bg);
   --o2-menu-color: var(--platform-menu-color);
   --o2-primary-btn-bg: var(--platform-menu-active-border);
+}
+
+// Sherlock sidebar: 90° rotated text by default, colored pills (Logs, Dashboard, Metrics inactive, Alerts) — applies whenever drawer has .sherlock-pill-nav
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
+  width: 56px !important;
+  min-width: 56px !important;
+  padding: 8px 0;
+  background: linear-gradient(180deg, #e2e8f0 0%, #f1f5f9 100%) !important;
+  border-right: 1px solid #cbd5e1;
+
+  .card-container {
+    padding: 0;
+  }
+
+  .leftNavList.sherlock-nav-list {
+    padding: 0 6px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .q-item {
+    width: 100%;
+    min-height: 72px;
+    margin: 0;
+    padding: 8px 0;
+    border-radius: 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 0 0 auto;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: #475569;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    .q-item__section--avatar {
+      flex-direction: column;
+      align-items: center;
+      min-width: auto;
+      margin-right: 0;
+      margin-bottom: 4px;
+    }
+
+    .q-icon {
+      font-size: 20px;
+      flex-shrink: 0;
+      color: #64748b;
+    }
+
+    .q-item-label.menu-link-label {
+      display: inline-block;
+      transform: rotate(90deg);
+      white-space: nowrap;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin: 0;
+      min-height: 32px;
+      line-height: 32px;
+      color: #475569;
+    }
+
+    &:hover:not(.q-router-link--active):not(.menu-link-inactive) {
+      background-color: #cbd5e1;
+      .q-icon,
+      .q-item-label.menu-link-label {
+        color: #334155;
+      }
+    }
+
+    &.q-router-link--active {
+      background-color: #4f46e5 !important;
+      color: #fff;
+
+      .q-icon,
+      .q-item-label.menu-link-label {
+        color: #fff !important;
+      }
+
+      &::before {
+        left: 0;
+        right: auto;
+        top: 8px;
+        bottom: 8px;
+        width: 3px;
+        height: auto;
+        background-color: #312e81;
+        border-radius: 2px 0 0 2px;
+      }
+    }
+
+    &.menu-link-inactive {
+      opacity: 0.55;
+      cursor: not-allowed;
+      pointer-events: none;
+      background-color: rgba(241, 245, 249, 0.8);
+    }
+  }
+}
+
+.body--dark .sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
+  background: linear-gradient(180deg, #1e293b 0%, #0f172a 100%) !important;
+  border-right-color: #334155;
+
+  .q-item {
+    background-color: rgba(30, 41, 59, 0.8);
+    color: #94a3b8;
+
+    .q-icon {
+      color: #94a3b8;
+    }
+
+    .q-item-label.menu-link-label {
+      color: #94a3b8;
+    }
+
+    &:hover:not(.q-router-link--active):not(.menu-link-inactive) {
+      background-color: #334155;
+      .q-icon,
+      .q-item-label.menu-link-label {
+        color: #e2e8f0;
+      }
+    }
+
+    &.q-router-link--active {
+      background-color: #4338ca !important;
+      .q-icon,
+      .q-item-label.menu-link-label {
+        color: #fff !important;
+      }
+      &::before {
+        background-color: #818cf8;
+      }
+    }
+
+    &.menu-link-inactive {
+      background-color: rgba(15, 23, 42, 0.6);
+    }
+  }
+}
+
+// Query editor placeholder overlay (logs)
+.query-editor-placeholder-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  color: var(--o2-text-muted, #64748b);
+  font-size: 13px;
+  font-weight: 500;
+  padding: 12px;
+  text-align: center;
 }
 
 // Alert field highlight animation
