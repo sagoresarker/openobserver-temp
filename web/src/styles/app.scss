@@ -177,16 +177,17 @@ body.platform-ui {
       gap: 8px;
     }
 
+    /* Force vertical sidebar layout */
     .q-item {
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
       width: 100%;
       min-height: 72px;
       margin: 0;
       padding: 8px 0;
       border-radius: 14px;
       display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
       flex: 0 0 auto;
       background-color: rgba(255, 255, 255, 0.7);
       color: #475569;
@@ -207,25 +208,27 @@ body.platform-ui {
         color: #64748b;
       }
 
+      /* Center label */
       .q-item-label.menu-link-label,
-      .q-item__label.menu-link-label {
+      .q-item__label.menu-link-label,
+      .q-item__label {
         display: flex !important;
+        justify-content: center !important;
         align-items: center;
-        justify-content: center;
         margin: 0;
         min-height: 32px;
         overflow: visible;
       }
 
-      /* Rotate ONLY the label; icons stay horizontal. Parent .q-item is flex-centered. */
+      /* Rotate text vertically (writing-mode + 180deg) */
       .sidebar-label {
-        display: inline-block;
-        transform: rotate(90deg);
-        white-space: nowrap;
-        transform-origin: center;
-        font-size: 12px;
+        writing-mode: vertical-rl !important;
+        transform: rotate(180deg) !important;
+        white-space: nowrap !important;
+        line-height: 1 !important;
+        text-align: center !important;
         font-weight: 600;
-        margin-top: 6px;
+        font-size: 12px;
         color: #475569;
       }
 
@@ -457,17 +460,17 @@ body.platform-ui {
     gap: 8px;
   }
 
-  /* sidebar-item: flexbox to center icon + label; do NOT rotate container */
+  /* Force vertical sidebar layout */
   .q-item {
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
     width: 100%;
     min-height: 72px;
     margin: 0;
     padding: 8px 0;
     border-radius: 14px;
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     flex: 0 0 auto;
     background-color: rgba(255, 255, 255, 0.7);
     color: #475569;
@@ -488,25 +491,27 @@ body.platform-ui {
       color: #64748b;
     }
 
+    /* Center label */
     .q-item-label.menu-link-label,
-    .q-item__label.menu-link-label {
-      display: flex;
+    .q-item__label.menu-link-label,
+    .q-item__label {
+      display: flex !important;
+      justify-content: center !important;
       align-items: center;
-      justify-content: center;
       margin: 0;
       min-height: 32px;
       overflow: visible;
     }
 
-    /* Rotate ONLY .sidebar-label; icons stay horizontal */
+    /* Rotate text vertically (writing-mode + 180deg) */
     .sidebar-label {
-      display: inline-block;
-      transform: rotate(90deg);
-      white-space: nowrap;
-      transform-origin: center;
-      font-size: 12px;
+      writing-mode: vertical-rl !important;
+      transform: rotate(180deg) !important;
+      white-space: nowrap !important;
+      line-height: 1 !important;
+      text-align: center !important;
       font-weight: 600;
-      margin-top: 6px;
+      font-size: 12px;
       color: #475569;
     }
 
