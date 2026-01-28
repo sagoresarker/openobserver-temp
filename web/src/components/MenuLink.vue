@@ -17,9 +17,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <template>
   <q-item
     :data-test="`menu-link-${link}-item`"
-    v-ripple="true"
+    v-ripple="!inactive"
     :to="
-      !external
+      !external && !inactive
         ? {
             path: link,
             exact: false,
@@ -29,16 +29,20 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           }
         : ''
     "
-    clickable
+    :clickable="!inactive"
     :class="{
       'q-router-link--active':
-        router.currentRoute.value.path.indexOf(link) == 0 && link != '/',
+        !inactive &&
+        router.currentRoute.value.path.indexOf(link) == 0 &&
+        link != '/',
       'q-link-function': title == 'Functions',
+      'menu-link-inactive': inactive,
     }"
     :target="target"
     :aria-current="isActive ? 'page' : undefined"
     :aria-label="ariaLabel"
-    v-on="external ? { click: () => openWebPage(link) } : {}"
+    :aria-disabled="inactive ? 'true' : undefined"
+    v-on="external && !inactive ? { click: () => openWebPage(link) } : {}"
   >
     <q-item-section v-if="icon" avatar>
       <div class="icon-wrapper">
@@ -52,7 +56,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           {{ badge > 99 ? '99+' : badge }}
         </div>
       </div>
-      <q-item-label>{{ title }}</q-item-label>
+      <q-item-label class="menu-link-label">
+        <span class="sidebar-label">{{ title }}</span>
+      </q-item-label>
     </q-item-section>
     <q-item-section v-else-if="iconComponent" avatar>
       <div class="icon-wrapper">
@@ -66,7 +72,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           {{ badge > 99 ? '99+' : badge }}
         </div>
       </div>
-      <q-item-label>{{ title }}</q-item-label>
+      <q-item-label class="menu-link-label">
+        <span class="sidebar-label">{{ title }}</span>
+      </q-item-label>
     </q-item-section>
   </q-item>
 </template>
@@ -123,6 +131,11 @@ export default defineComponent({
     badge: {
       type: Number,
       default: 0,
+    },
+
+    inactive: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props) {
@@ -226,6 +239,12 @@ export default defineComponent({
     &::before {
       display: none;
     }
+  }
+
+  &.menu-link-inactive {
+    opacity: 0.55;
+    cursor: not-allowed;
+    pointer-events: none;
   }
 }
 

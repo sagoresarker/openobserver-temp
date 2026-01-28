@@ -1,0 +1,33 @@
+/**
+ * Sherlock sidebar – loaded last in main.ts so it overrides Quasar and other styles.
+ * Simple horizontal labels with enough width so "Logging", "Dashboard", "Metrics", "Alerts" are fully visible.
+ */
+
+/* Sidebar width – enough for full label text */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
+  width: 140px !important;
+  min-width: 140px !important;
+}
+
+/* Force vertical layout (icon above label) and center */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .q-item {
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+/* Center label container */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .q-item__label,
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .q-item-label.menu-link-label {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+/* Label text: horizontal, fully visible, no truncation */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer .sidebar-label {
+  white-space: nowrap !important;
+  overflow: visible !important;
+  text-align: center !important;
+  font-weight: 600 !important;
+}

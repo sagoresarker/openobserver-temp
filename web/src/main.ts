@@ -25,6 +25,7 @@ import createRouter from "./router";
 import i18n from "./locales";
 import "./styles/quasar-overrides.scss";
 import "./styles/tailwind.css";
+import "./styles/sherlock-sidebar.scss";
 import config from "./aws-exports";
 import configService from "./services/config";
 
