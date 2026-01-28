@@ -17,7 +17,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <!-- eslint-disable vue/attribute-hyphenation -->
 <!-- eslint-disable vue/v-on-event-hyphenation -->
 <template>
-  <q-page class="logPage" id="logPage">
+  <q-page class="logPage sherlock-logs-ui" id="logPage">
     <div
       v-show="!showSearchHistory && !showSearchScheduler"
       id="secondLevel"
@@ -2806,4 +2806,5 @@ export default defineComponent({
 
 <style lang="scss">
 @import "@/styles/logs/logs-page.scss";
+@import "@/styles/logs/sherlock-logs-ui.scss";
 </style>
