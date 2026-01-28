@@ -57,7 +57,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
       </div>
       <q-item-label class="menu-link-label">
-        <span class="sherlock-rotated-label">{{ title }}</span>
+        <span class="sidebar-label">{{ title }}</span>
       </q-item-label>
     </q-item-section>
     <q-item-section v-else-if="iconComponent" avatar>
@@ -73,7 +73,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </div>
       </div>
       <q-item-label class="menu-link-label">
-        <span class="sherlock-rotated-label">{{ title }}</span>
+        <span class="sidebar-label">{{ title }}</span>
       </q-item-label>
     </q-item-section>
   </q-item>

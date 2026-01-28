@@ -217,14 +217,15 @@ body.platform-ui {
         overflow: visible;
       }
 
-      .sherlock-rotated-label {
-        display: inline-block !important;
-        transform: rotate(90deg) !important;
+      /* Rotate ONLY the label; icons stay horizontal. Parent .q-item is flex-centered. */
+      .sidebar-label {
+        display: inline-block;
+        transform: rotate(90deg);
         white-space: nowrap;
-        font-size: 11px;
+        transform-origin: center;
+        font-size: 12px;
         font-weight: 600;
-        letter-spacing: 0.03em;
-        line-height: 1.2;
+        margin-top: 6px;
         color: #475569;
       }
 
@@ -233,7 +234,7 @@ body.platform-ui {
         .q-icon {
           color: #334155;
         }
-        .sherlock-rotated-label {
+        .sidebar-label {
           color: #334155;
         }
       }
@@ -245,7 +246,7 @@ body.platform-ui {
         .q-icon {
           color: #fff !important;
         }
-        .sherlock-rotated-label {
+        .sidebar-label {
           color: #fff !important;
         }
 
@@ -282,7 +283,7 @@ body.platform-ui {
         color: #94a3b8;
       }
 
-      .sherlock-rotated-label {
+      .sidebar-label {
         color: #94a3b8;
       }
 
@@ -291,7 +292,7 @@ body.platform-ui {
         .q-icon {
           color: #e2e8f0;
         }
-        .sherlock-rotated-label {
+        .sidebar-label {
           color: #e2e8f0;
         }
       }
@@ -301,7 +302,7 @@ body.platform-ui {
         .q-icon {
           color: #fff !important;
         }
-        .sherlock-rotated-label {
+        .sidebar-label {
           color: #fff !important;
         }
         &::before {
@@ -436,7 +437,7 @@ body.platform-ui {
   --o2-primary-btn-bg: var(--platform-menu-active-border);
 }
 
-// Sherlock sidebar: 90° rotated text by default, colored pills — applies whenever drawer has .sherlock-pill-nav (uses .sherlock-rotated-label span in MenuLink)
+// Sherlock sidebar: 90° rotated text by default, colored pills — applies whenever drawer has .sherlock-pill-nav (uses .sidebar-label span in MenuLink)
 .sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
   width: 56px !important;
   min-width: 56px !important;
@@ -456,6 +457,7 @@ body.platform-ui {
     gap: 8px;
   }
 
+  /* sidebar-item: flexbox to center icon + label; do NOT rotate container */
   .q-item {
     width: 100%;
     min-height: 72px;
@@ -464,8 +466,8 @@ body.platform-ui {
     border-radius: 14px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     flex: 0 0 auto;
     background-color: rgba(255, 255, 255, 0.7);
     color: #475569;
@@ -488,7 +490,7 @@ body.platform-ui {
 
     .q-item-label.menu-link-label,
     .q-item__label.menu-link-label {
-      display: flex !important;
+      display: flex;
       align-items: center;
       justify-content: center;
       margin: 0;
@@ -496,14 +498,15 @@ body.platform-ui {
       overflow: visible;
     }
 
-    .sherlock-rotated-label {
-      display: inline-block !important;
-      transform: rotate(90deg) !important;
+    /* Rotate ONLY .sidebar-label; icons stay horizontal */
+    .sidebar-label {
+      display: inline-block;
+      transform: rotate(90deg);
       white-space: nowrap;
-      font-size: 11px;
+      transform-origin: center;
+      font-size: 12px;
       font-weight: 600;
-      letter-spacing: 0.03em;
-      line-height: 1.2;
+      margin-top: 6px;
       color: #475569;
     }
 
@@ -512,7 +515,7 @@ body.platform-ui {
       .q-icon {
         color: #334155;
       }
-      .sherlock-rotated-label {
+      .sidebar-label {
         color: #334155;
       }
     }
@@ -525,7 +528,7 @@ body.platform-ui {
       .q-icon {
         color: #fff !important;
       }
-      .sherlock-rotated-label {
+      .sidebar-label {
         color: #fff !important;
       }
 
@@ -563,7 +566,7 @@ body.platform-ui {
       color: #94a3b8;
     }
 
-    .sherlock-rotated-label {
+    .sidebar-label {
       color: #94a3b8;
     }
 
@@ -572,7 +575,7 @@ body.platform-ui {
       .q-icon {
         color: #e2e8f0;
       }
-      .sherlock-rotated-label {
+      .sidebar-label {
         color: #e2e8f0;
       }
     }
@@ -582,7 +585,7 @@ body.platform-ui {
       .q-icon {
         color: #fff !important;
       }
-      .sherlock-rotated-label {
+      .sidebar-label {
         color: #fff !important;
       }
       &::before {
