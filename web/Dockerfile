@@ -20,9 +20,11 @@
 FROM public.ecr.aws/docker/library/node:24-alpine AS builder
 WORKDIR /web
 
-# Install deps (including devDependencies for build)
+# Install deps (including devDependencies for build).
+# Use npm install so build works when package-lock.json is out of sync with package.json.
+# For reproducible builds, run "npm install" in web/ locally and commit package-lock.json, then switch to "npm ci".
 COPY package.json package-lock.json* ./
-RUN npm ci
+RUN npm install
 
 # App source
 COPY . .
