@@ -106,6 +106,14 @@
   }
 }
 
+/* Left sidebar (fields list) - precise width, don't take more than needed */
+.sherlock-logs-ui .logs-splitter-smooth .q-splitter__panel:first-child {
+  max-width: 280px !important;
+}
+.sherlock-logs-ui .logs-splitter-smooth .q-splitter__before {
+  max-width: 280px !important;
+}
+
 /* Fields sidebar - compact list */
 .sherlock-logs-ui .logs-index-menu .card-container {
   padding: 10px 12px !important;

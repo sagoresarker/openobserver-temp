@@ -60,7 +60,10 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
       :breakpoint="500"
       role="navigation"
       aria-label="Main navigation"
-      class="sherlock-nav-drawer card-container q-mt-xs tw:mb-[0.675rem]"
+      :class="[
+        'sherlock-nav-drawer card-container q-mt-xs tw:mb-[0.675rem]',
+        platformUi ? 'sherlock-pill-nav' : '',
+      ]"
     >
       <q-list class="leftNavList sherlock-nav-list">
         <menu-link
@@ -68,7 +71,11 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           :key="nav.title"
           :link-name="nav.name"
           :animation-index="index"
-          v-bind="{ ...nav, mini: platformUi ? false : miniMode }"
+          v-bind="{
+            ...nav,
+            mini: platformUi ? false : miniMode,
+            inactive: nav.inactive === true,
+          }"
           @mouseenter="handleMenuHover(nav.link)"
         />
       </q-list>
@@ -643,6 +650,7 @@ export default defineComponent({
             icon: outlinedBarChart,
             link: "/metrics",
             name: "metrics",
+            inactive: true,
           },
           {
             title: t("menu.alerts"),
@@ -691,7 +699,7 @@ export default defineComponent({
     }
 
     const platformUi = computed(() => isSimplifiedNav());
-    const drawerWidth = computed(() => (platformUi.value ? 220 : 84));
+    const drawerWidth = computed(() => (platformUi.value ? 56 : 84));
 
     watch(
       () => store.state.zoConfig,
