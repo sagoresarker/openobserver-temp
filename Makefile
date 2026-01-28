@@ -5,7 +5,7 @@
 # If the router deployment uses port 5080 for probes, you may need to patch
 # the container port to 8080 (frontend listens on 8080). See deploy-patch.
 
-IMAGE_NAME   := openobserve-web
+IMAGE_NAME   := sherlock-web
 DOCKER_USER  := sagoresarker
 TAG          := v0.0.1
 K8S_NS       := openobserve
