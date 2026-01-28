@@ -56,13 +56,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
     <q-drawer
       v-model="drawer"
       show-if-above
-      :width="drawerWidth"
+      :width="56"
       :breakpoint="500"
       role="navigation"
       aria-label="Main navigation"
       :class="[
-        'sherlock-nav-drawer card-container q-mt-xs tw:mb-[0.675rem]',
-        platformUi ? 'sherlock-pill-nav' : '',
+        'sherlock-nav-drawer sherlock-pill-nav card-container q-mt-xs tw:mb-[0.675rem]',
       ]"
     >
       <q-list class="leftNavList sherlock-nav-list">
@@ -73,7 +72,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           :animation-index="index"
           v-bind="{
             ...nav,
-            mini: platformUi ? false : miniMode,
+            mini: false,
             inactive: nav.inactive === true,
           }"
           @mouseenter="handleMenuHover(nav.link)"
@@ -553,7 +552,7 @@ export default defineComponent({
 
     onMounted(async () => {
       filterMenus();
-      document.body.classList.toggle("platform-ui", isSimplifiedNav());
+      document.body.classList.add("platform-ui");
 
       // TODO OK : Clean get config functions which sets rum user and functions menu. Move it to common method.
       if (
@@ -629,40 +628,34 @@ export default defineComponent({
         import.meta.env.VITE_PLATFORM_UI !== "false");
 
     const filterMenus = () => {
-      const simplifiedNav = isSimplifiedNav();
-
-      if (simplifiedNav) {
-        linksList.value = [
-          {
-            title: t("menu.logging"),
-            icon: outlinedSearch,
-            link: "/logs",
-            name: "logs",
-          },
-          {
-            title: t("menu.dashboard"),
-            icon: outlinedDashboard,
-            link: "/dashboards",
-            name: "dashboards",
-          },
-          {
-            title: t("menu.metrics"),
-            icon: outlinedBarChart,
-            link: "/metrics",
-            name: "metrics",
-            inactive: true,
-          },
-          {
-            title: t("menu.alerts"),
-            icon: outlinedReportProblem,
-            link: "/alerts",
-            name: "alertList",
-          },
-        ];
-      } else {
-        updateIncidentsMenu();
-        updateActionsMenu();
-      }
+      // Default: 4-item rotated pill sidebar (Logs, Dashboard, Metrics inactive, Alerts)
+      linksList.value = [
+        {
+          title: t("menu.logging"),
+          icon: outlinedSearch,
+          link: "/logs",
+          name: "logs",
+        },
+        {
+          title: t("menu.dashboard"),
+          icon: outlinedDashboard,
+          link: "/dashboards",
+          name: "dashboards",
+        },
+        {
+          title: t("menu.metrics"),
+          icon: outlinedBarChart,
+          link: "/metrics",
+          name: "metrics",
+          inactive: true,
+        },
+        {
+          title: t("menu.alerts"),
+          icon: outlinedReportProblem,
+          link: "/alerts",
+          name: "alertList",
+        },
+      ];
 
       const disableMenus = new Set(
         store.state.zoConfig?.custom_hide_menus
@@ -679,33 +672,16 @@ export default defineComponent({
       });
     };
 
-    // additional links based on environment and conditions (skip when simplified nav)
-    if (!isSimplifiedNav()) {
-      if (config.isCloud == "true") {
-        linksList.value = mainLayoutMixin
-          .setup()
-          .leftNavigationLinks(linksList, t);
-        filterMenus();
-      } else {
-        linksList.value.splice(7, 0, {
-          title: t("menu.report"),
-          icon: outlinedDescription,
-          link: "/reports",
-          name: "reports",
-        });
-      }
-    } else {
-      filterMenus();
-    }
+    filterMenus();
 
-    const platformUi = computed(() => isSimplifiedNav());
-    const drawerWidth = computed(() => (platformUi.value ? 56 : 84));
+    const platformUi = computed(() => true);
+    const drawerWidth = computed(() => 56);
 
     watch(
       () => store.state.zoConfig,
       () => {
         filterMenus();
-        document.body.classList.toggle("platform-ui", isSimplifiedNav());
+        document.body.classList.add("platform-ui");
       },
       { deep: true },
     );

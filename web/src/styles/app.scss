@@ -70,8 +70,8 @@ body.platform-ui {
     box-shadow: 0 1px 0 rgba(27, 31, 36, 0.08);
   }
 
-  // Sherlock app sidebar - distinct layout (0% OpenObserve look): rail-style, right-edge active, indigo/slate
-  .sherlock-nav-drawer.q-drawer {
+  // Sherlock app sidebar - distinct layout (only when NOT pill nav; pill nav uses rotated labels below)
+  .sherlock-nav-drawer.q-drawer:not(.sherlock-pill-nav) {
     background-color: var(--sherlock-nav-bg) !important;
     border-right: 1px solid var(--sherlock-nav-border);
     padding: 0;
