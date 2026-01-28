@@ -1137,7 +1137,7 @@ class="q-pr-sm q-pt-xs" />
               <div
                 v-if="
                   router.currentRoute.value.name === 'logs' &&
-                  searchObj.data.editorValue === '' &&
+                  (searchObj.data.editorValue === '' || searchObj.data.query === '') &&
                   searchObj.meta.queryEditorPlaceholderFlag
                 "
                 class="query-editor-placeholder-overlay"
@@ -1160,7 +1160,7 @@ class="q-pr-sm q-pt-xs" />
                 @run-query="handleRunQueryFn"
                 @keydown="handleKeyDown"
                 :class="
-                  searchObj.data.editorValue == '' &&
+                  (searchObj.data.editorValue == '' || searchObj.data.query === '') &&
                   searchObj.meta.queryEditorPlaceholderFlag
                     ? 'empty-query'
                     : ''
