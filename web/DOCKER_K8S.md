@@ -1,111 +1,59 @@
-# Frontend Docker image for Kubernetes
+# Frontend Docker images for Kubernetes
 
-Build context: **`./web`** (run from repo root).
+## Helm deployment: only change the image
 
-## Makefile (build, push, deploy)
+You use **Helm** for the router and **only change the image**. To fix **login** and **static assets**:
 
-Use `Makefile.web` at repo root to build, push, and update **o2-openobserve-router** to use the frontend image:
+1. **Use the combined image** (backend + our frontend), not the frontend-only image.
+2. Build and push it, then set the Helm router image to that tag.
 
-```bash
-# From repo root
-make -f Makefile.web build          # Build image (linux/amd64)
-make -f Makefile.web push           # Tag and push to Docker Hub
-make -f Makefile.web deploy         # Set o2-openobserve-router image and rollout
-make -f Makefile.web deploy-patch   # One-time: container port 8080, probes use /
-```
+### Build and push combined image
 
-Override image/tag/user:
+From **repo root**:
 
 ```bash
-make -f Makefile.web build IMAGE_NAME=openobserve-web DOCKER_USER=sagoresarker TAG=v0.0.2
-make -f Makefile.web build VITE_OPENOBSERVE_ENDPOINT=https://api.o2.example.com  # API on different host
+make build-combined
+make push-combined
 ```
 
-After changing the router to the frontend image, run **`deploy-patch`** once so the deployment uses port 8080 and probes `path: /` (the frontend has no `/healthz`).
+This builds `deploy/build/Dockerfile.combined`: OpenObserve backend + our web app. The UI is built with **base /web/** (backend serves UI at `/web/`). API and UI are same origin → **login works**, assets load.
+
+### Set Helm router image
+
+Point the `o2-openobserve-router` image to the combined image, e.g.:
+
+- `sagoresarker/sherlock-o2:v0.0.1`
+
+(Use your `DOCKER_USER` / `IMAGE_COMBINED` / `TAG` from the Makefile.)
+
+Then upgrade your Helm release so the router uses that image. No extra manifests, no Ingress changes.
 
 ---
 
-## Build
+## Base path (static assets)
 
-```bash
-# From repo root
-docker build -f web/Dockerfile -t <your-registry>/openobserve-web:<tag> ./web
-```
+- **Combined image:** Built with `VITE_BASE_PATH=/web/`. UI at `/web/`, assets at `/web/assets/...`. Handled by `Dockerfile.combined`.
+- **Frontend-only image:** Built with `VITE_BASE_PATH=/` by default. Use when serving the app at **root** (e.g. standalone `serve`). Override with `--build-arg VITE_BASE_PATH=/subpath/` if served under a subpath.
 
-## API endpoint (VITE_OPENOBSERVE_ENDPOINT)
-
-Vite bakes the API base URL at **build time**. Choose one:
-
-### Same origin (recommended for K8s)
-
-UI and API are served from the **same host** (e.g. Ingress routes `/` → frontend, `/api` → `o2-openobserve-router`). The app uses `window.location.origin` for the API.
-
-```bash
-docker build -f web/Dockerfile -t <image> ./web
-```
-
-Do **not** pass `VITE_OPENOBSERVE_ENDPOINT`.
-
-### API on a different host
-
-UI and API have different URLs (e.g. UI at `https://app.o2.example.com`, API at `https://api.o2.example.com`). The value must be **reachable from the user’s browser** (e.g. Ingress or LoadBalancer URL), not cluster-internal DNS.
-
-```bash
-docker build -f web/Dockerfile \
-  --build-arg VITE_OPENOBSERVE_ENDPOINT=https://api.o2.example.com \
-  -t <image> ./web
-```
-
-## Kubernetes example
-
-- Backend: existing `o2-openobserve-router` (Helm), service `o2-openobserve-router`, port 5080.
-- Frontend: separate Deployment using this image, port 8080.
-
-**Same-origin setup:** Configure your Ingress so that:
-- `https://o2.example.com/` → frontend Service (port 8080)
-- `https://o2.example.com/api` → `o2-openobserve-router` (port 5080)
-
-Then build the frontend image **without** `VITE_OPENOBSERVE_ENDPOINT`.
-
-**Minimal Deployment + Service:**
-
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: openobserve-web
-  namespace: openobserve
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: openobserve-web
-  template:
-    metadata:
-      labels:
-        app: openobserve-web
-    spec:
-      containers:
-        - name: web
-          image: <your-registry>/openobserve-web:<tag>
-          ports:
-            - containerPort: 8080
-              name: http
-          resources:
-            {}
 ---
-apiVersion: v1
-kind: Service
-metadata:
-  name: openobserve-web
-  namespace: openobserve
-spec:
-  selector:
-    app: openobserve-web
-  ports:
-    - port: 80
-      targetPort: 8080
-      name: http
-```
 
-Point your Ingress (or router) at the `openobserve-web` Service for the UI path.
+## Frontend-only image (no backend)
+
+The **frontend-only** image (`make build` / `make push`) is for running **only** the UI (e.g. separate Deployment, `serve`). It has **no** API → **login will not work** if you use it as the router image.
+
+Use the **combined** image for the Helm router when you only change the image.
+
+---
+
+## Makefile targets
+
+| Target | Description |
+|--------|-------------|
+| `make build` | Frontend-only image (web/Dockerfile). |
+| `make build-combined` | **Backend + frontend** (use for Helm router). |
+| `make push` | Push frontend-only image. |
+| `make push-combined` | Push combined image. |
+| `make deploy` | Replace router image with frontend-only (**removes API**, use only if API is elsewhere). |
+| `make deploy-standalone` | Deploy frontend as separate Deployment; router stays as API. |
+
+For **Helm, only change the image**: use `build-combined` + `push-combined`, then set the router image to the combined tag.

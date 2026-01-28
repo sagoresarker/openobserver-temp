@@ -106,7 +106,7 @@ export default defineConfig({
     //     "default-src 'self'; connect-src 'self' http://localhost:5080;  script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;img-src 'self' data:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; block-all-mixed-content;",
     // },
   },
-  base: "./",
+  base: process.env.VITE_BASE_PATH ?? "./",
   plugins: [
     vue({
       template: { transformAssetUrls },

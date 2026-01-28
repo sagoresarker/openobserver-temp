@@ -29,6 +29,10 @@ RUN npm install
 # App source
 COPY . .
 
+# Base path for assets (use "/" when served at root; fixes static assets not loading).
+ARG VITE_BASE_PATH=/
+ENV VITE_BASE_PATH=${VITE_BASE_PATH}
+
 # API base URL: set at build time for K8s when UI and API are on different hosts.
 # Omit for same-origin setup (Ingress serves both on same host).
 ARG VITE_OPENOBSERVE_ENDPOINT

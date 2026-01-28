@@ -1,0 +1,53 @@
+# Frontend-only Deployment + Service.
+# Use with deploy-standalone: keep o2-openobserve-router as API, route / -> this, /api|/config|/auth -> router.
+# Image is replaced by Makefile (IMAGE_PLACEHOLDER).
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: openobserve-web
+  namespace: openobserve
+  labels:
+    app: openobserve-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: openobserve-web
+  template:
+    metadata:
+      labels:
+        app: openobserve-web
+    spec:
+      containers:
+        - name: web
+          image: IMAGE_PLACEHOLDER
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+              name: http
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 10
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: openobserve-web
+  namespace: openobserve
+spec:
+  selector:
+    app: openobserve-web
+  ports:
+    - port: 80
+      targetPort: 8080
+      name: http
