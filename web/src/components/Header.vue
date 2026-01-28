@@ -316,93 +316,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
         </q-btn>
       </div>
 
-      <!-- THEME SWITCHER: Toggle between light and dark mode -->
-      <ThemeSwitcher></ThemeSwitcher>
-
-      <!-- SLACK COMMUNITY LINK -->
-      <q-btn
-        round
-        flat
-        dense
-        :ripple="false"
-        @click="openSlack"
-        data-test="menu-link-slack-item"
-      >
-        <div class="row items-center no-wrap">
-          <q-icon
-            ><component :is="slackIcon" size="32px" class="header-icon"
-          /></q-icon>
-        </div>
-        <q-tooltip anchor="top middle" self="bottom middle">
-          {{ t("menu.slack") }}
-        </q-tooltip>
-      </q-btn>
-
-      <!-- HELP MENU: Contains links to docs, API, and about page -->
-      <q-btn
-        round
-        flat
-        dense
-        :ripple="false"
-        data-test="menu-link-help-item"
-      >
-        <div class="row items-center no-wrap">
-          <q-icon name="help_outline" class="header-icon"></q-icon>
-          <q-tooltip anchor="top middle" self="bottom middle">
-            {{ t("menu.help") }}
-          </q-tooltip>
-        </div>
-
-        <q-menu
-          fit
-          anchor="bottom right"
-          self="top right"
-          transition-show="jump-down"
-          transition-hide="jump-up"
-          class="header-menu-bar"
-        >
-          <q-list style="min-width: 250px">
-            <!-- OpenAPI link (only for non-cloud deployments) -->
-            <div
-              v-if="
-                config.isCloud !== 'true' &&
-                !store.state.zoConfig?.custom_hide_menus
-                  ?.split(',')
-                  ?.includes('openapi')
-              "
-            >
-              <q-item clickable @click="navigateToOpenAPI(zoBackendUrl)">
-                <q-item-section>
-                  <q-item-label>
-                    {{ t(`menu.openapi`) }}
-                  </q-item-label>
-                </q-item-section>
-              </q-item>
-              <q-separator />
-            </div>
-
-            <!-- Documentation link -->
-            <q-item clickable @click="navigateToDocs()">
-              <q-item-section>
-                <q-item-label>
-                  {{ t(`menu.docs`) }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-separator />
-
-            <!-- About page link -->
-            <q-item clickable @click="goToAbout" data-test="menu-link-about-item">
-              <q-item-section>
-                <q-item-label>
-                  {{ t(`menu.about`) }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
-        </q-menu>
-      </q-btn>
-
       <!-- SETTINGS BUTTON -->
       <q-btn
         data-test="menu-link-settings-item"
@@ -469,23 +382,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
             </q-item>
             <q-separator />
 
-            <!-- Theme management -->
-            <q-item
-              data-test="menu-link-predefined-themes-item"
-              v-ripple="true"
-              v-close-popup="true"
-              clickable
-              @click="openPredefinedThemes"
-            >
-              <q-item-section avatar>
-                <q-icon size="xs" name="color_lens" class="padding-none" />
-              </q-item-section>
-              <q-item-section>
-                <q-item-label>{{ t("common.manageTheme") }}</q-item-label>
-              </q-item-section>
-            </q-item>
-            <q-separator />
-
             <!-- Logout -->
             <q-item
               data-test="menu-link-logout-item"
@@ -511,15 +407,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <script lang="ts">
 import { defineComponent, PropType, computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
-import ThemeSwitcher from "./ThemeSwitcher.vue";
 import { outlinedSettings } from "@quasar/extras/material-icons-outlined";
 import { getImageURL } from "@/utils/zincutils";
 
 export default defineComponent({
   name: "HeaderComponent",
-  components: {
-    ThemeSwitcher,
-  },
+  components: {},
   props: {
     // Store instance
     store: {
@@ -608,7 +501,6 @@ export default defineComponent({
     "openSlack",
     "navigateToOpenAPI",
     "navigateToDocs",
-    "openPredefinedThemes",
     "signout",
   ],
   setup(props, { emit }) {
@@ -653,10 +545,6 @@ export default defineComponent({
       emit("navigateToDocs");
     };
 
-    const openPredefinedThemes = () => {
-      emit("openPredefinedThemes");
-    };
-
     const signout = () => {
       emit("signout");
     };
@@ -689,7 +577,6 @@ export default defineComponent({
       openSlack,
       navigateToOpenAPI,
       navigateToDocs,
-      openPredefinedThemes,
       signout,
       handleMouseEnter,
       handleMouseLeave,

@@ -73,7 +73,7 @@ export default createStore({
     organizations: [],
     currentuser: useLocalCurrentUser() ? useLocalCurrentUser() : {},
     searchCollapsibleSection: 20,
-    theme: "",
+    theme: "dark",
     printMode: false,
     organizationData: JSON.parse(JSON.stringify(organizationObj)),
     zoConfig: <{ [key: string]: any }>{},

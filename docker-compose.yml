@@ -13,19 +13,13 @@ services:
     volumes:
       - ./data:/data
 
+  # Frontend: production build (Dockerfile) – fast rebuilds; use Dockerfile.dev + ports 8081:8081 + volume ./web:/app for hot reload
   frontend:
     build:
       context: ./web
-      dockerfile: Dockerfile.dev
-      args:
-        BUILDKIT_INLINE_CACHE: 1
+      dockerfile: Dockerfile
     container_name: openobserve-frontend
     ports:
       - "8081:8081"
-    environment:
-      - VITE_OPENOBSERVE_ENDPOINT=http://localhost:5080/
-    volumes:
-      - ./web:/app
-      - /app/node_modules
     depends_on:
       - backend

@@ -23,6 +23,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 <script lang="ts">
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
+import { useQuasar } from "quasar";
 import { onMounted, watch } from "vue";
 import config from "@/aws-exports";
 import { applyThemeColors } from "@/utils/theme";
@@ -31,15 +32,19 @@ export default {
   setup() {
     const store = useStore();
     const router = useRouter();
+    const $q = useQuasar();
     const creds = localStorage.getItem("creds");
     if (creds) {
       router.push("/logs");
     }
 
-    // Initialize theme colors on app mount
-    // This runs once when the app loads and applies the correct theme colors
-    // based on priority: tempThemeColors > localStorage > org settings > defaults
+    // Force dark theme only: no theme switcher, always dark
     onMounted(() => {
+      $q.dark.set(true);
+      store.dispatch("appTheme", "dark");
+      try {
+        localStorage.setItem("theme", "dark");
+      } catch (_) {}
       initializeThemeColors();
     });
 
