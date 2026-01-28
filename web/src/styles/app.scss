@@ -159,8 +159,8 @@ body.platform-ui {
 
   // Sherlock vertical pill sidebar: 90° rotated text, colored pills — must be inside body.platform-ui to override .sherlock-nav-drawer .q-item-label above
   .sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
-    width: 56px !important;
-    min-width: 56px !important;
+    width: 140px !important;
+    min-width: 140px !important;
     padding: 8px 0;
     background: linear-gradient(180deg, #e2e8f0 0%, #f1f5f9 100%) !important;
     border-right: 1px solid #cbd5e1;
@@ -170,7 +170,7 @@ body.platform-ui {
     }
 
     .leftNavList.sherlock-nav-list {
-      padding: 0 6px;
+      padding: 0 10px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -220,13 +220,10 @@ body.platform-ui {
         overflow: visible;
       }
 
-      /* Rotate text vertically (writing-mode + 180deg) */
+      /* Label: horizontal text, fully visible */
       .sidebar-label {
-        writing-mode: vertical-rl !important;
-        transform: rotate(180deg) !important;
-        white-space: nowrap !important;
-        line-height: 1 !important;
-        text-align: center !important;
+        white-space: nowrap;
+        text-align: center;
         font-weight: 600;
         font-size: 12px;
         color: #475569;
@@ -442,8 +439,8 @@ body.platform-ui {
 
 // Sherlock sidebar: 90° rotated text by default, colored pills — applies whenever drawer has .sherlock-pill-nav (uses .sidebar-label span in MenuLink)
 .sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
-  width: 56px !important;
-  min-width: 56px !important;
+  width: 140px !important;
+  min-width: 140px !important;
   padding: 8px 0;
   background: linear-gradient(180deg, #e2e8f0 0%, #f1f5f9 100%) !important;
   border-right: 1px solid #cbd5e1;
@@ -453,7 +450,7 @@ body.platform-ui {
   }
 
   .leftNavList.sherlock-nav-list {
-    padding: 0 6px;
+    padding: 0 10px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -503,13 +500,10 @@ body.platform-ui {
       overflow: visible;
     }
 
-    /* Rotate text vertically (writing-mode + 180deg) */
+    /* Label: horizontal text, fully visible */
     .sidebar-label {
-      writing-mode: vertical-rl !important;
-      transform: rotate(180deg) !important;
-      white-space: nowrap !important;
-      line-height: 1 !important;
-      text-align: center !important;
+      white-space: nowrap;
+      text-align: center;
       font-weight: 600;
       font-size: 12px;
       color: #475569;

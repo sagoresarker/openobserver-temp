@@ -1,9 +1,15 @@
 /**
- * Sherlock pill sidebar – loaded last in main.ts so it overrides Quasar and other styles.
- * Do not nest under body.platform-ui; these selectors must always win for the pill nav.
+ * Sherlock sidebar – loaded last in main.ts so it overrides Quasar and other styles.
+ * Simple horizontal labels with enough width so "Logging", "Dashboard", "Metrics", "Alerts" are fully visible.
  */
 
-/* Force vertical sidebar layout */
+/* Sidebar width – enough for full label text */
+.sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
+  width: 140px !important;
+  min-width: 140px !important;
+}
+
+/* Force vertical layout (icon above label) and center */
 .sherlock-pill-nav.sherlock-nav-drawer.q-drawer .q-item {
   flex-direction: column !important;
   align-items: center !important;
@@ -18,12 +24,10 @@
   align-items: center !important;
 }
 
-/* Rotate text vertically – only the label, not the icon */
+/* Label text: horizontal, fully visible, no truncation */
 .sherlock-pill-nav.sherlock-nav-drawer.q-drawer .sidebar-label {
-  writing-mode: vertical-rl !important;
-  transform: rotate(180deg) !important;
   white-space: nowrap !important;
-  line-height: 1 !important;
+  overflow: visible !important;
   text-align: center !important;
   font-weight: 600 !important;
 }
