@@ -1,12 +1,11 @@
 # syntax=docker/dockerfile:1
-# Same as deploy/build/Dockerfile webbuilder stage (exact commands).
-# Build context must be repository root: docker build -f web/Dockerfile .
-# For standalone frontend (no backend in this image), pass the backend API URL
-# so the app can reach /config and other APIs, e.g.:
-#   docker build -f web/Dockerfile --build-arg VITE_OPENOBSERVE_ENDPOINT=http://your-api-host:5080 .
+# Build context must be the web directory (e.g. docker-compose: context: ./web, dockerfile: Dockerfile).
+# From repo root: docker build -f web/Dockerfile ./web
+# For standalone frontend, pass the backend API URL so the app can reach /config:
+#   docker build -f web/Dockerfile --build-arg VITE_OPENOBSERVE_ENDPOINT=http://your-api-host:5080 ./web
 FROM public.ecr.aws/docker/library/node:24-trixie
 WORKDIR /web
-COPY ./web /web/
+COPY . /web/
 
 # Optional: set at build time when serving frontend separately from backend
 ARG VITE_OPENOBSERVE_ENDPOINT
