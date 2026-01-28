@@ -190,7 +190,8 @@ body.platform-ui {
       flex: 0 0 auto;
       background-color: rgba(255, 255, 255, 0.7);
       color: #475569;
-      transition: background-color 0.15s ease, color 0.15s ease;
+      border: 1px solid #cbd5e1;
+      transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
       .q-item__section--avatar {
         flex-direction: column;
@@ -208,23 +209,31 @@ body.platform-ui {
 
       .q-item-label.menu-link-label,
       .q-item__label.menu-link-label {
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+        min-height: 32px;
+        overflow: visible;
+      }
+
+      .sherlock-rotated-label {
         display: inline-block !important;
         transform: rotate(90deg) !important;
         white-space: nowrap;
         font-size: 11px;
         font-weight: 600;
         letter-spacing: 0.03em;
-        margin: 0;
-        min-height: 32px;
-        line-height: 32px;
+        line-height: 1.2;
         color: #475569;
       }
 
       &:hover:not(.q-router-link--active):not(.menu-link-inactive) {
         background-color: #cbd5e1;
-        .q-icon,
-        .q-item-label.menu-link-label,
-        .q-item__label.menu-link-label {
+        .q-icon {
+          color: #334155;
+        }
+        .sherlock-rotated-label {
           color: #334155;
         }
       }
@@ -233,9 +242,10 @@ body.platform-ui {
         background-color: #4f46e5 !important;
         color: #fff;
 
-        .q-icon,
-        .q-item-label.menu-link-label,
-        .q-item__label.menu-link-label {
+        .q-icon {
+          color: #fff !important;
+        }
+        .sherlock-rotated-label {
           color: #fff !important;
         }
 
@@ -272,25 +282,26 @@ body.platform-ui {
         color: #94a3b8;
       }
 
-      .q-item-label.menu-link-label,
-      .q-item__label.menu-link-label {
+      .sherlock-rotated-label {
         color: #94a3b8;
       }
 
       &:hover:not(.q-router-link--active):not(.menu-link-inactive) {
         background-color: #334155;
-        .q-icon,
-        .q-item-label.menu-link-label,
-        .q-item__label.menu-link-label {
+        .q-icon {
+          color: #e2e8f0;
+        }
+        .sherlock-rotated-label {
           color: #e2e8f0;
         }
       }
 
       &.q-router-link--active {
         background-color: #4338ca !important;
-        .q-icon,
-        .q-item-label.menu-link-label,
-        .q-item__label.menu-link-label {
+        .q-icon {
+          color: #fff !important;
+        }
+        .sherlock-rotated-label {
           color: #fff !important;
         }
         &::before {
@@ -425,7 +436,7 @@ body.platform-ui {
   --o2-primary-btn-bg: var(--platform-menu-active-border);
 }
 
-// Sherlock sidebar: 90° rotated text by default, colored pills (Logs, Dashboard, Metrics inactive, Alerts) — applies whenever drawer has .sherlock-pill-nav
+// Sherlock sidebar: 90° rotated text by default, colored pills — applies whenever drawer has .sherlock-pill-nav (uses .sherlock-rotated-label span in MenuLink)
 .sherlock-pill-nav.sherlock-nav-drawer.q-drawer {
   width: 56px !important;
   min-width: 56px !important;
@@ -458,7 +469,8 @@ body.platform-ui {
     flex: 0 0 auto;
     background-color: rgba(255, 255, 255, 0.7);
     color: #475569;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    border: 1px solid #cbd5e1;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
 
     .q-item__section--avatar {
       flex-direction: column;
@@ -474,23 +486,33 @@ body.platform-ui {
       color: #64748b;
     }
 
-    .q-item-label.menu-link-label {
-      display: inline-block;
-      transform: rotate(90deg);
+    .q-item-label.menu-link-label,
+    .q-item__label.menu-link-label {
+      display: flex !important;
+      align-items: center;
+      justify-content: center;
+      margin: 0;
+      min-height: 32px;
+      overflow: visible;
+    }
+
+    .sherlock-rotated-label {
+      display: inline-block !important;
+      transform: rotate(90deg) !important;
       white-space: nowrap;
       font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.03em;
-      margin: 0;
-      min-height: 32px;
-      line-height: 32px;
+      line-height: 1.2;
       color: #475569;
     }
 
     &:hover:not(.q-router-link--active):not(.menu-link-inactive) {
       background-color: #cbd5e1;
-      .q-icon,
-      .q-item-label.menu-link-label {
+      .q-icon {
+        color: #334155;
+      }
+      .sherlock-rotated-label {
         color: #334155;
       }
     }
@@ -498,9 +520,12 @@ body.platform-ui {
     &.q-router-link--active {
       background-color: #4f46e5 !important;
       color: #fff;
+      border-color: #312e81;
 
-      .q-icon,
-      .q-item-label.menu-link-label {
+      .q-icon {
+        color: #fff !important;
+      }
+      .sherlock-rotated-label {
         color: #fff !important;
       }
 
@@ -532,27 +557,32 @@ body.platform-ui {
   .q-item {
     background-color: rgba(30, 41, 59, 0.8);
     color: #94a3b8;
+    border: 1px solid #334155;
 
     .q-icon {
       color: #94a3b8;
     }
 
-    .q-item-label.menu-link-label {
+    .sherlock-rotated-label {
       color: #94a3b8;
     }
 
     &:hover:not(.q-router-link--active):not(.menu-link-inactive) {
       background-color: #334155;
-      .q-icon,
-      .q-item-label.menu-link-label {
+      .q-icon {
+        color: #e2e8f0;
+      }
+      .sherlock-rotated-label {
         color: #e2e8f0;
       }
     }
 
     &.q-router-link--active {
       background-color: #4338ca !important;
-      .q-icon,
-      .q-item-label.menu-link-label {
+      .q-icon {
+        color: #fff !important;
+      }
+      .sherlock-rotated-label {
         color: #fff !important;
       }
       &::before {

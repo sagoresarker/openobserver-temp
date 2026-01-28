@@ -56,7 +56,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           {{ badge > 99 ? '99+' : badge }}
         </div>
       </div>
-      <q-item-label class="menu-link-label">{{ title }}</q-item-label>
+      <q-item-label class="menu-link-label">
+        <span class="sherlock-rotated-label">{{ title }}</span>
+      </q-item-label>
     </q-item-section>
     <q-item-section v-else-if="iconComponent" avatar>
       <div class="icon-wrapper">
@@ -70,7 +72,9 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
           {{ badge > 99 ? '99+' : badge }}
         </div>
       </div>
-      <q-item-label class="menu-link-label">{{ title }}</q-item-label>
+      <q-item-label class="menu-link-label">
+        <span class="sherlock-rotated-label">{{ title }}</span>
+      </q-item-label>
     </q-item-section>
   </q-item>
 </template>
