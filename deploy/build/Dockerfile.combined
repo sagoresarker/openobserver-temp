@@ -1,38 +1,82 @@
 # syntax=docker/dockerfile:1
-# OpenObserve backend + our frontend (web). Use this image for the Helm router
-# so you only change the image: API + UI same origin, login works.
+# =============================================================================
+# OpenObserve Router image: backend binary + embedded frontend (web).
 #
-# Build from repo root: docker build -f deploy/build/Dockerfile.combined -t <tag> .
-# Use deploy/build/Dockerfile.amd64 as reference for Rust stage if you need sccache/CI.
+# Use this image for o2-openobserve-router in Helm/K8s. Same process serves:
+# - HTTP API (auth, login, config) and UI at /web/
+# - gRPC ingest (logs/metrics/traces) and proxies to backend nodes
+#
+# Builds only the main openobserve binary (-p openobserve --bin openobserve).
+# Does not build wal-reader or other workspace binaries.
+#
+# Build from repo root:
+#   docker build -f deploy/build/Dockerfile.combined -t my-registry/openobserve-router:tag .
+# If you previously had mv failures, use --no-cache once:
+#   docker build --no-cache -f deploy/build/Dockerfile.combined -t ... .
+#
+# For faster rebuilds, add a .dockerignore at repo root excluding: target/,
+# web/node_modules/, web/dist/, .git/
+# =============================================================================
 
+# -----------------------------------------------------------------------------
+# Stage 1: Frontend (Vue/Quasar) — output embedded by backend at /web/
+# -----------------------------------------------------------------------------
 FROM public.ecr.aws/docker/library/node:24-trixie AS webbuilder
 WORKDIR /web
-COPY ./web /web/
 
-# UI served at /web/ by backend; assets must use base /web/
+COPY web/package.json web/package-lock.json* ./
+RUN npm ci 2>/dev/null || npm install
+
+COPY web/ ./
+# Backend serves UI at /web/; frontend must use this base path for assets.
 ENV VITE_BASE_PATH=/web/
-RUN npm install
 RUN NODE_OPTIONS="--max-old-space-size=8192" npm run build
 
+# -----------------------------------------------------------------------------
+# Stage 2: Rust backend (single openobserve binary) with embedded web/dist
+# -----------------------------------------------------------------------------
 FROM public.ecr.aws/zinclabs/rust:trixie-sccache AS builder
-ARG AWS_DEFAULT_REGION
-ARG AWS_CONTAINER_CREDENTIALS_RELATIVE_URI
 
 RUN rustc --version && sccache --version
 
 WORKDIR /openobserve
 COPY . /openobserve
-COPY --from=webbuilder /web/dist web/dist
-RUN mkdir -p /openobserve/target/release/
+COPY --from=webbuilder /web/dist /openobserve/web/dist
 
-RUN --mount=type=cache,target=/root/.cache/sccache cargo build --release --features mimalloc --target x86_64-unknown-linux-gnu \
-  && sccache --show-stats
-RUN mv /openobserve/target/x86_64-unknown-linux-gnu/release/openobserve /openobserve/target/release/openobserve
+RUN mkdir -p /openobserve/target/release /openobserve/out
 
+# Build only the main binary (router/API/UI). We do NOT cache /openobserve/target:
+# a cache mount hides the binary from later RUNs, so mv fails. sccache only.
+RUN --mount=type=cache,target=/root/.cache/sccache \
+    cargo build -p openobserve --release --bin openobserve \
+        --features mimalloc \
+        --target x86_64-unknown-linux-gnu \
+    && sccache --show-stats \
+    && mv /openobserve/target/x86_64-unknown-linux-gnu/release/openobserve /openobserve/out/openobserve
+
+# -----------------------------------------------------------------------------
+# Stage 3: Minimal runtime (Debian slim)
+# -----------------------------------------------------------------------------
 FROM public.ecr.aws/debian/debian:trixie-slim AS runtime
-RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
-RUN apt-get install -y curl htop iftop sysstat procps lsof net-tools sqlite3
-RUN update-ca-certificates
-COPY --from=builder /openobserve/target/release/openobserve /
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+        htop \
+        iftop \
+        sysstat \
+        procps \
+        lsof \
+        net-tools \
+        sqlite3 \
+    && update-ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=builder /openobserve/out/openobserve /openobserve
+
+# Default data dir (override with -v or ZO_DATA_DIR).
+ENV ZO_DATA_DIR=/data
 RUN ["/openobserve", "init-dir", "-p", "/data/"]
+
+EXPOSE 5080
 CMD ["/openobserve"]
